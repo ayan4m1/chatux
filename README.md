@@ -4,9 +4,9 @@
 
 It is licensed under [MIT](https://opensource.org/licenses/MIT) license.
 
-[![npm version](https://badge.fury.io/js/chatux.svg)](https://badge.fury.io/js/chatux)
+[![npm version](https://badge.fury.io/js/%40ayan4m1/chatux.svg)](https://badge.fury.io/js/%40ayan4m1/chatux)
 
-### What is '**chatux**' like?
+## Features
 
 It is an independent and lightweight chat user interface (chat UI) library for javascript.
 
@@ -15,140 +15,121 @@ It is an independent and lightweight chat user interface (chat UI) library for j
 - For mobile devices like smart phones and tablets, chat UI will be overlaid on existing pages to avoid disturbing
   existing content
 
-[![guide](https://riversun.github.io/chatux/guide.png)](https://riversun.github.io/chatux/)
+## Demo
 
-# DEMO
+https://ayan4m1.github.io/chatux/
 
-https://riversun.github.io/chatux/
-
-<img src="https://riversun.github.io/chatux/chatux_qr.png">
-
-**How to play demo.**
+### Usage
 
 This demo is simple echo chat. But a few command available.If you write "show buttons", you can see action buttons in
 chat. Or you write "show image", you can see image in chat.
 
-Example project is available on this repo.  
-https://github.com/riversun/chatux-example
+Example project is available in [this repo](https://github.com/riversun/chatux-example).
 
-# Quick start
+## Quick Start
 
 Check this example.
 
 ```html
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <title>chatux example</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-</head>
-<body style="padding:0px;margin:0px;">
-<div style="padding:40px">
-    <h1>chatux example</h1>
-    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-        magna aliqua.</p>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/chatux/dist/chatux.min.js"></script>
-<script>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+  </head>
+  <body style="padding:0px;margin:0px;">
+    <div style="padding:40px">
+      <h1>chatux example</h1>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua.
+      </p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chatux/dist/chatux.min.js"></script>
+    <script>
+      const chatux = new ChatUx();
 
-    const chatux = new ChatUx();
-
-    const opt = {
+      const opt = {
         api: {
-            // URL of chat server
-            endpoint: 'https://script.google.com/macros/s/AKfycbwpf8iZfGXkJD6K__oCVQYF35HLBQjYxmKP0Ifrpe_piK4By4rh/exec',
-            // HTTP METHOD
-            method: 'GET',
-            // DATA TYPE
-            dataType: 'jsonp',
-            // escapeUserInput true:Escaping HTML tags in user input text when submitting to the server. default is false.
-            escapeUserInput: true,
+          // URL of chat server
+          endpoint:
+            'https://script.google.com/macros/s/AKfycbwpf8iZfGXkJD6K__oCVQYF35HLBQjYxmKP0Ifrpe_piK4By4rh/exec',
+          // HTTP METHOD
+          method: 'GET',
+          // DATA TYPE
+          dataType: 'jsonp',
+          // escapeUserInput true:Escaping HTML tags in user input text when submitting to the server. default is false.
+          escapeUserInput: true
         },
         window: {
-            title: 'My chat',
-            infoUrl: 'https://github.com/riversun/chatux'
+          title: 'My chat',
+          infoUrl: 'https://github.com/riversun/chatux'
         }
-    };
+      };
 
-    //initialize
-    chatux.init(opt);
-    chatux.start(true);
-
-</script>
-</body>
+      //initialize
+      chatux.init(opt);
+      chatux.start(true);
+    </script>
+  </body>
 </html>
-
 ```
 
-<!-- 
-**Show on PC**
+## Minimal Example
 
-[![guide](https://riversun.github.io/chatux/onpc.png)](https://riversun.github.io/chatux/)
-
-
-**Show on mobile**
-
-[![guide](https://riversun.github.io/chatux/onmobile.png)](https://riversun.github.io/chatux/)
-
--->
-
-## install and minimal code
-
-### using npm
-
-**install**
+### With NPM
 
 ```
 npm install chatux --save
 ```
 
-**code**
+#### Code
 
 ```js
-import {ChatUx} from 'chatux';
+import { ChatUx } from 'chatux';
 
 const chatux = new ChatUx();
 
 chatux.init({
   api: {
-    endpoint: 'http://localhost:8080/chat',//chat server
-    method: 'GET',//HTTP METHOD when requesting chat server
-    dataType: 'json',//json or jsonp is available
-    escapeUserInput: true,//true:Escaping HTML tags in user input text when submitting to the server. default is false.
+    endpoint: 'http://localhost:8080/chat', //chat server
+    method: 'GET', //HTTP METHOD when requesting chat server
+    dataType: 'json', //json or jsonp is available
+    escapeUserInput: true //true:Escaping HTML tags in user input text when submitting to the server. default is false.
   }
 });
 
 chatux.start();
 ```
 
-### using with script tag
+### With script tag
 
 ```
 <script src="https://cdn.jsdelivr.net/npm/chatux/dist/chatux.min.js"></script>
 ```
 
-**code**
+#### Code
 
 ```js
 const chatux = new ChatUx();
 
 chatux.init({
   api: {
-    endpoint: 'http://localhost:8080/chat',//chat server
-    method: 'GET',//HTTP METHOD when requesting chat server
-    dataType: 'json',//json or jsonp is available
-    escapeUserInput: true,// true:Escaping HTML tags in user input text when submitting to the server. default is false.
+    endpoint: 'http://localhost:8080/chat', //chat server
+    method: 'GET', //HTTP METHOD when requesting chat server
+    dataType: 'json', //json or jsonp is available
+    escapeUserInput: true // true:Escaping HTML tags in user input text when submitting to the server. default is false.
   }
 });
 
 chatux.start();
-
-
 ```
 
-# How it works
+## How it works
 
 The system of **chatux** is very simple.
 
@@ -163,22 +144,19 @@ chatux.init({
     endpoint: 'http://localhost:8080/chat',
     method: 'GET',
     dataType: 'json',
-    escapeUserInput: true,// true:Escaping HTML tags in user input text when submitting to the server. default is false.
+    escapeUserInput: true // true:Escaping HTML tags in user input text when submitting to the server. default is false.
   }
 });
-
 ```
 
 The following is the sequence.
 
 ![image](https://user-images.githubusercontent.com/11747460/54331314-d3735f80-465c-11e9-9a22-5a975809f770.png)
 
--
-    1. **chatux** sends user input text to chat server.  
-       GET http://localhost:8080/chat?text=hello
+- 1. **chatux** sends user input text to chat server.  
+     GET http://localhost:8080/chat?text=hello
 
--
-    2. The server processes user input text and returns a response as JSON.
+- 2. The server processes user input text and returns a response as JSON.
 
 ```json
 {
@@ -191,26 +169,25 @@ The following is the sequence.
 }
 ```
 
--
-    3. According to the response, **chatux** renders the result on the chat screen.  
-       ![image](https://user-images.githubusercontent.com/11747460/54341678-c4e97000-467d-11e9-96e5-090d4ac8ba9c.png)
+- 3. According to the response, **chatux** renders the result on the chat screen.  
+     ![image](https://user-images.githubusercontent.com/11747460/54341678-c4e97000-467d-11e9-96e5-090d4ac8ba9c.png)
 
 So, if you create chat server that can do this kind of interaction, you can easily create chatbots etc.
 
 Next, let's see how to render.
 
-# Chat server
+## Chat server
 
 Let's create a simple chat server.
 
-* initialize npm project and install express
+- initialize npm project and install express
 
 ```shell
 npm init
 npm install express
 ```
 
-* Write a simple server that returns json.
+- Write a simple server that returns json.
 
 ```js
 const express = require('express');
@@ -241,17 +218,15 @@ app.get('/chat', function (req, res) {
 app.listen(port, () => {
   console.log('chat server started on port:' + port);
 });
-
-
 ```
 
-* start server
+- start server
 
 ```shell
 npm start
 ```
 
-* Access directory
+- Access directory
 
 http://localhost:8081/chat?text=hello
 
@@ -268,7 +243,7 @@ You will get JSON for chatux as follows.
 }
 ```
 
-* Access from **ChatUX** on browser
+- Access from **ChatUX** on browser
 
 ```js
 chatux.init({
@@ -276,18 +251,17 @@ chatux.init({
     endpoint: 'http://localhost:8080/chat',
     method: 'GET',
     dataType: 'json',
-    escapeUserInput: true,
+    escapeUserInput: true
   }
 });
-chatux.start(true);//true:automatically open chat
-
+chatux.start(true); //true:automatically open chat
 ```
 
 ![image](https://user-images.githubusercontent.com/11747460/54860945-e379f600-4d64-11e9-9f23-1636343f3607.png)
 
 <hr>
 
-# Custom query parameters
+## Custom query parameters
 
 There are two approaches to specifying query parameters.
 
@@ -300,12 +274,11 @@ chatux.init({
     method: 'GET',
     dataType: 'json',
     params: {
-      'param1': 'value1',
-      'param2': 'value2'
+      param1: 'value1',
+      param2: 'value2'
     }
   }
 });
-
 ```
 
 chat ux will send parameters like 'https://example.com/api?param1=value1&param2=value2'
@@ -317,7 +290,7 @@ chatux.init({
   api: {
     endpoint: 'http://localhost:8080/chat',
     method: 'GET',
-    dataType: 'json',
+    dataType: 'json'
   },
   methods: {
     onPrepareRequest: (httpClient) => {
@@ -332,12 +305,11 @@ chatux.init({
     }
   }
 });
-
 ```
 
 If nothing is set, only the query parameter named 'text' will be set when you tap send button.
 
-# Custom Http Headers
+## Custom Http Headers
 
 There are two approaches to set http headers.
 
@@ -353,12 +325,11 @@ chatux.init({
     dataType: 'json',
     escapeUserInput: true,
     headers: {
-      'Authorization': 'Bearer ABCD123ABCD123ABCD123',
+      Authorization: 'Bearer ABCD123ABCD123ABCD123',
       'X-Additional-Headers': 'something_value'
     }
   }
 });
-
 ```
 
 2.Custom headers can be set at each request.
@@ -369,7 +340,7 @@ chatux.init({
     endpoint: 'http://localhost:8080/chat',
     method: 'GET',
     dataType: 'json',
-    escapeUserInput: true,
+    escapeUserInput: true
   },
   methods: {
     onPrepareRequest: (httpClient) => {
@@ -379,7 +350,6 @@ chatux.init({
     }
   }
 });
-
 ```
 
 **Note**
@@ -387,7 +357,7 @@ chatux.init({
 - Http headers cannot be sent when using jsonp.
 - Don't forget 'Access-Control-Allow-Headers' when accessing with cors :)
 
-# How to render a chat UI
+## How to render a chat UI
 
 Since chatux can render various variations of chat UI, I introduce them below. I want to show raw JSON and code example
 for chat server respectively.
@@ -398,7 +368,7 @@ for chat server respectively.
 
 ```js
 app.get('/chat', function (req, res) {
-  const response = {output: []};
+  const response = { output: [] };
   const msg = response.output;
   msg.push({
     type: 'text',
@@ -433,7 +403,7 @@ app.get('/chat', function (req, res) {
 
 ```js
 app.get('/chat', function (req, res) {
-  const response = {output: []};
+  const response = { output: [] };
   const msg = response.output;
   msg.push({
     type: 'image',
@@ -468,13 +438,13 @@ app.get('/chat', function (req, res) {
 
 ```js
 app.get('/chat', function (req, res) {
-  const response = {output: []};
+  const response = { output: [] };
   const msg = response.output;
   const opts = [];
-  opts.push({label: 'label1', value: 'value1'});
-  opts.push({label: 'label2', value: 'value2'});
-  opts.push({label: 'label3', value: 'value3'});
-  msg.push({type: "option", options: opts});
+  opts.push({ label: 'label1', value: 'value1' });
+  opts.push({ label: 'label2', value: 'value2' });
+  opts.push({ label: 'label3', value: 'value3' });
+  msg.push({ type: 'option', options: opts });
   res.json(response);
 });
 ```
@@ -517,11 +487,12 @@ app.get('/chat', function (req, res) {
 
 ```js
 app.get('/chat', function (req, res) {
-  const response = {output: []};
+  const response = { output: [] };
   const msg = response.output;
   msg.push({
     type: 'html',
-    value: 'Click <a href="https://github.com/riversun" target="_blank" >here</a> to open a page.',
+    value:
+      'Click <a href="https://github.com/riversun" target="_blank" >here</a> to open a page.',
     delayMs: 500
   });
   res.json(response);
@@ -554,7 +525,7 @@ app.get('/chat', function (req, res) {
 
 ```js
 app.get('/chat', function (req, res) {
-  const response = {output: []};
+  const response = { output: [] };
   const msg = response.output;
   const videoId = 'TP4lxliMHXY'; //youtube video id
   msg.push({
@@ -592,7 +563,7 @@ app.get('/chat', function (req, res) {
 
 ```js
 app.get('/chat', function (req, res) {
-  const response = {output: []};
+  const response = { output: [] };
   const msg = response.output;
   msg.push({
     type: 'text',
@@ -601,13 +572,14 @@ app.get('/chat', function (req, res) {
   });
   msg.push({
     type: 'image',
-    value: 'https://upload.wikimedia.org/wikipedia/commons/a/a3/Aptenodytes_forsteri_-Snow_Hill_Island%2C_Antarctica_-adults_and_juvenile-8.jpg'
+    value:
+      'https://upload.wikimedia.org/wikipedia/commons/a/a3/Aptenodytes_forsteri_-Snow_Hill_Island%2C_Antarctica_-adults_and_juvenile-8.jpg'
   });
   const opts = [];
-  opts.push({label: 'bob', value: 'value1'});
-  opts.push({label: 'riversun', value: 'value2'});
-  opts.push({label: 'john', value: 'value3'});
-  msg.push({type: 'option', options: opts});
+  opts.push({ label: 'bob', value: 'value1' });
+  opts.push({ label: 'riversun', value: 'value2' });
+  opts.push({ label: 'john', value: 'value3' });
+  msg.push({ type: 'option', options: opts });
   res.json(response);
 });
 ```
@@ -645,7 +617,6 @@ app.get('/chat', function (req, res) {
     }
   ]
 }
-
 ```
 
 **RESULT**
@@ -660,7 +631,7 @@ app.get('/chat', function (req, res) {
 
 ```js
 app.get('/chat', function (req, res) {
-  const response = {output: []};
+  const response = { output: [] };
   const msg = response.output;
   msg.push({
     type: 'window',
@@ -710,12 +681,13 @@ app.get('/chat', function (req, res) {
 
 ```js
 app.get('/chat', function (req, res) {
-  const response = {output: []};
+  const response = { output: [] };
   const msg = response.output;
   msg.push({
     type: 'window',
     title: 'youtube movie',
-    html: '<div style="position: relative; width: 100%; padding-top: 56.25%;background:black;overflow: hidden">' +
+    html:
+      '<div style="position: relative; width: 100%; padding-top: 56.25%;background:black;overflow: hidden">' +
       '<iframe style="position: absolute;top: 0;right: 0;width: 100% !important;height: 100% !important;" width="400" height="300"  src="https://www.youtube.com/embed/nepdFs-2V1Y" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>',
     mobileUrl: 'https://www.youtube.com/embed/nepdFs-2V1Y',
     left: 60,
@@ -766,15 +738,17 @@ app.get('/chat', function (req, res) {
 
 ```js
 app.get('/chat', function (req, res) {
-  const response = {output: []};
+  const response = { output: [] };
   const msg = response.output;
   msg.push({
     type: 'window',
     title: 'google drive movie',
-    html: '<div style="position: relative; width: 100%; padding-top: 56.25%;background:black;overflow: hidden">' +
+    html:
+      '<div style="position: relative; width: 100%; padding-top: 56.25%;background:black;overflow: hidden">' +
       '<iframe  style="position: absolute;top: 0;right: 0;width: 100% !important;height: 100% !important;"  src="https://drive.google.com/file/d/1FfOnq85pQgXtNsZeaF7P_CCsdKzcRrQk/preview" width="400" height="300"></iframe>' +
       '</div>',
-    mobileUrl: 'https://drive.google.com/file/d/1FfOnq85pQgXtNsZeaF7P_CCsdKzcRrQk/preview',//open this url when open on mobile
+    mobileUrl:
+      'https://drive.google.com/file/d/1FfOnq85pQgXtNsZeaF7P_CCsdKzcRrQk/preview', //open this url when open on mobile
     left: 100,
     top: 100,
     width: 400,
@@ -821,56 +795,55 @@ The following example shows all **ChatUX** initialization parameters. You can cu
 like.
 
 ```js
-
 const chatux = new ChatUx();
 
 //init parameters
 const opt = {
-  renderMode: 'auto',//'auto' or 'pc' or 'mobile'
-  buttonOffWhenOpenFrame: false,//true:Turn off wakeup button when the chat window is opened.only for pc mode.
+  renderMode: 'auto', //'auto' or 'pc' or 'mobile'
+  buttonOffWhenOpenFrame: false, //true:Turn off wakeup button when the chat window is opened.only for pc mode.
   bot: {
-    wakeupText: null,//user input which is automatically send to server on startup
-    botPhoto: null,//URL of bot photo image
-    humanPhoto: null,//URL of human photo image
+    wakeupText: null, //user input which is automatically send to server on startup
+    botPhoto: null, //URL of bot photo image
+    humanPhoto: null, //URL of human photo image
     widget: {
-      sendLabel: 'SEND',//label for SEND button
-      placeHolder: 'Say something'//default caption for input box
+      sendLabel: 'SEND', //label for SEND button
+      placeHolder: 'Say something' //default caption for input box
     }
   },
   api: {
-    endpoint: 'http://localhost:8081/chat',//endpoint of chat server
-    method: 'GET',//'GET' or 'POST'
-    dataType: 'json',//'json' or 'jsonp'
+    endpoint: 'http://localhost:8081/chat', //endpoint of chat server
+    method: 'GET', //'GET' or 'POST'
+    dataType: 'json', //'json' or 'jsonp'
     errorResponse: {
       output: [
         //Message displayed when a network error occurs when accessing the chat server
-        {type: 'text', value: 'Sorry, an error occurred'}
+        { type: 'text', value: 'Sorry, an error occurred' }
       ]
     },
     //set http headers
     headers: {
-      'Authorization': 'Bearer ABCD123ABCD123ABCD123',
+      Authorization: 'Bearer ABCD123ABCD123ABCD123',
       'X-Additional-Headers': 'something_value'
     },
-    //set query parameters            
+    //set query parameters
     params: {
-      'param1': 'value1',
-      'param2': 'value2'
+      param1: 'value1',
+      param2: 'value2'
     }
   },
   window: {
-    title: 'My chat',//window title
+    title: 'My chat', //window title
 
     //infoUrl
     // If this value is set, an 'info' icon will appear at the left of the window's
     // title bar, and  clicking this icon will jump to this URL
     infoUrl: 'https://github.com/riversun/chatux',
     size: {
-      width: 350,//window width in px
-      height: 500,//window height in px
-      minWidth: 300,//window minimum-width in px
-      minHeight: 300,//window minimum-height in px
-      titleHeight: 50//title bar height in px
+      width: 350, //window width in px
+      height: 500, //window height in px
+      minWidth: 300, //window minimum-width in px
+      minHeight: 300, //window minimum-height in px
+      titleHeight: 50 //title bar height in px
     },
     appearance: {
       //border - border style of the window
@@ -892,7 +865,7 @@ const opt = {
         buttons: [
           //Icon named 'hideButton' to close chat window
           {
-            fa: 'fas fa-times',//specify font awesome icon
+            fa: 'fas fa-times', //specify font awesome icon
             name: 'hideButton',
             visible: true
           }
@@ -900,20 +873,20 @@ const opt = {
         buttonsOnLeft: [
           //Icon named 'info' to jump to 'infourl' when clicked
           {
-            fa: 'fas fa-comment-alt',//specify font awesome icon
+            fa: 'fas fa-comment-alt', //specify font awesome icon
             name: 'info',
             visible: true
           }
-        ],
-      },
+        ]
+      }
     }
   },
   //wakeupButton style
   wakeupButton: {
-    right: 20,//right position in pixel
-    bottom: 20,//bottom position in pixel
-    size: 60,//wakeup button size
-    fontSize: 25//wakeup button font size for fontawesome icon
+    right: 20, //right position in pixel
+    bottom: 20, //bottom position in pixel
+    size: 60, //wakeup button size
+    fontSize: 25 //wakeup button font size for fontawesome icon
   },
   //Define a callback method to be called when an event occurs
   methods: {
@@ -950,7 +923,7 @@ const opt = {
     // },
     // onFinishRequest: (httpClient) => {
     //     delete httpClient.params.mykey1;
-    // },            
+    // },
     onServerResponse: (response) => {
       //A callback that occurs when there is a response from the chat server.
       // You can handle server responses before reflecting them in the chat UI.
@@ -963,5 +936,5 @@ const opt = {
 //initialize
 chatux.init(opt);
 
-chatux.start(true);//true:open chat UI automatically
+chatux.start(true); //true:open chat UI automatically
 ```
