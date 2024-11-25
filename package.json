@@ -1,6 +1,6 @@
 {
   "name": "@ayan4m1/chatux",
-  "version": "1.3.0",
+  "version": "2.0.0",
   "description": "Chat Bot UI / Conversational UI library for Java Script ",
   "main": "dist/chatux.min.cjs",
   "module": "dist/chatux.min.js",
