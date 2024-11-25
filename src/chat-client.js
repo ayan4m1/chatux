@@ -8,7 +8,6 @@ import AjaxClient from './ajax-client.js';
  * @author Tom Misawa (riversun.org@gmail.com,https://github.com/riversun)
  */
 export default class ChatClient {
-
   constructor(opts) {
     this.endpoint = opts.endpoint;
 
@@ -23,9 +22,7 @@ export default class ChatClient {
     }
 
     this.errorResponse = {
-      output: [
-        {type: 'text', value: 'An error occurred.'}
-      ]
+      output: [{ type: 'text', value: 'An error occurred.' }]
     };
 
     if (opts.errorResponse) {
@@ -42,7 +39,6 @@ export default class ChatClient {
   }
 
   sendMsgToChatServer(callbackFunc) {
-
     const ac = new AjaxClient();
 
     let params;
@@ -59,12 +55,13 @@ export default class ChatClient {
       dataType: this.dataType,
       data: params,
       headers: this.headers
-    }).done(response => {
-      callbackFunc(response);
-    }).fail((err) => {
-      const errorResponse = this.errorResponse;
-      callbackFunc(errorResponse);
-    });
+    })
+      .done((response) => {
+        callbackFunc(response);
+      })
+      .fail((err) => {
+        const errorResponse = this.errorResponse;
+        callbackFunc(errorResponse);
+      });
   }
 }
-

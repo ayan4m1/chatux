@@ -1,11 +1,10 @@
 const packageJson = require('./package.json');
 const version = packageJson.version;
-const path = require("path");
+const path = require('path');
 
 const webpack = require('webpack');
 
 module.exports = (env, argv) => {
-
   const conf = {
     mode: 'development',
     devServer: {
@@ -17,12 +16,12 @@ module.exports = (env, argv) => {
       host: argv.mode === 'production' ? `0.0.0.0` : `localhost`,
       disableHostCheck: true
     },
-    entry: { 'chatux': './src/index.js' },
+    entry: { chatux: './src/index.js' },
     output: {
-      path: path.join(__dirname, "dist"),
+      path: path.join(__dirname, 'dist'),
       publicPath: '/js/',
       filename: argv.mode === 'production' ? `[name].min.js` : `[name].js`,
-      library: '',
+      library: 'chatux',
       libraryTarget: 'umd'
     },
     module: {
@@ -37,32 +36,23 @@ module.exports = (env, argv) => {
                 presets: [['@babel/preset-env']]
               }
             }
-          ],
+          ]
         },
         {
           test: /\.css$/,
-          use: [
-            { loader: 'style-loader' },
-            { loader: 'css-loader' },
-          ]
+          use: [{ loader: 'style-loader' }, { loader: 'css-loader' }]
         },
         {
           test: /\.(png|jpg|gif)$/i,
-          use: [
-            { loader: 'url-loader' },
-          ]
-        },
-      ],
-
-    },
-    resolve: {
-      alias: {
-        'vue': 'vue/dist/vue.min.js',
-      }
+          use: [{ loader: 'url-loader' }]
+        }
+      ]
     },
     plugins: [
-      new webpack.BannerPlugin(`[name] v${version} Copyright (c) 2019-2022 Tom Misawa, riversun.org@gmail.com, https://github.com/riversun`)
-    ],
+      new webpack.BannerPlugin(
+        `[name] v${version} Copyright (c) 2019-2022 Tom Misawa, riversun.org@gmail.com, https://github.com/riversun`
+      )
+    ]
   };
 
   if (argv.mode !== 'production') {
@@ -70,5 +60,4 @@ module.exports = (env, argv) => {
   }
 
   return conf;
-
 };

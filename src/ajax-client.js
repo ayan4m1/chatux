@@ -5,15 +5,12 @@
  *
  * @author Tom Misawa (riversun.org@gmail.com,https://github.com/riversun)
  */
-import {SANITIZE_USER_INPUT_FOR_SENDING_VIA_HTTP_METHOD} from "./chat-ux-def";
+import { SANITIZE_USER_INPUT_FOR_SENDING_VIA_HTTP_METHOD } from './chat-ux-def';
 
 export default class AjaxClient {
-
-  constructor() {
-  }
+  constructor() {}
 
   ajax(options) {
-
     const url = this._createUrl(options);
     const method = options.type;
     const dataType = options.dataType;
@@ -23,7 +20,6 @@ export default class AjaxClient {
     let postBody = null;
 
     if (method === 'POST') {
-
       postBody = JSON.stringify(data);
 
       if (dataType === 'jsonp') {
@@ -42,7 +38,7 @@ export default class AjaxClient {
     const reqParam = {
       url: url,
       method: method,
-      body: postBody,
+      body: postBody
     };
 
     if (headers) {
@@ -63,7 +59,7 @@ export default class AjaxClient {
     const fetchParam = {
       method: reqParam.method,
       mode: 'cors',
-      cache: 'no-cache',
+      cache: 'no-cache'
       //credentials:null,// 'include',
       //referrer: 'no-referrer',
     };
@@ -78,7 +74,7 @@ export default class AjaxClient {
       fetchParam.headers = reqParam.headers;
     } else {
       fetchParam.headers = {
-        'Content-Type': 'application/json; charset=utf-8',
+        'Content-Type': 'application/json; charset=utf-8'
       };
     }
 
@@ -89,7 +85,7 @@ export default class AjaxClient {
 
     //execute fetch
     fetch(reqParam.url, fetchParam)
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
           const errorObj = response.statusText;
           asyncResult._fail(errorObj);
@@ -97,15 +93,14 @@ export default class AjaxClient {
         }
         return response.json();
       })
-      .then(json => {
+      .then((json) => {
         asyncResult._success(json);
       })
-      .catch(err => {
+      .catch((err) => {
         const errorObj = err;
         asyncResult._fail(errorObj);
       });
     return asyncResult;
-
   }
 
   _handleJsonp(reqParam) {
@@ -124,16 +119,16 @@ export default class AjaxClient {
       asyncResult._success(res);
     };
 
-    const parentEle = document.getElementsByTagName('head') ? document.getElementsByTagName('head')[0] : document.body;
+    const parentEle = document.getElementsByTagName('head')
+      ? document.getElementsByTagName('head')[0]
+      : document.body;
 
     parentEle.appendChild(scriptEle);
 
     return asyncResult;
-
   }
 
   _createUrl(options) {
-
     if (options.type === 'POST') {
       //POST
       return options.url;
@@ -144,7 +139,9 @@ export default class AjaxClient {
         url = url + '?';
         for (let paramKey of Object.keys(options.data)) {
           const paramVal = options.data[paramKey];
-          const _finalParamVal = SANITIZE_USER_INPUT_FOR_SENDING_VIA_HTTP_METHOD ? encodeURIComponent(paramVal) : paramVal;
+          const _finalParamVal = SANITIZE_USER_INPUT_FOR_SENDING_VIA_HTTP_METHOD
+            ? encodeURIComponent(paramVal)
+            : paramVal;
           url += `${paramKey}=${_finalParamVal}&`;
         }
         url = url.substring(0, url.length - 1);
@@ -155,21 +152,21 @@ export default class AjaxClient {
 
   _createUUID() {
     const dateTime = new Date().getTime();
-    const uuid = 'xxxxxxxx_xxxx_4xxx_yxxx_xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-      const r = (dateTime + Math.random() * 16) % 16 | 0;
-      return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
+    const uuid = 'xxxxxxxx_xxxx_4xxx_yxxx_xxxxxxxxxxxx'.replace(
+      /[xy]/g,
+      function (c) {
+        const r = (dateTime + Math.random() * 16) % 16 | 0;
+        return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16);
+      }
+    );
     return uuid;
   }
 }
 
 class AjaxResult {
-
   constructor() {
-    this._successFunc = () => {
-    };
-    this._failFunc = () => {
-    };
+    this._successFunc = () => {};
+    this._failFunc = () => {};
   }
 
   done(callbackFunc) {

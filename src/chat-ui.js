@@ -1,10 +1,7 @@
 import ChatClient from './chat-client.js';
-import BotUI from 'botui';
-import sanitize from "./sanitizer";
-import {
-  SANITIZE_USER_INPUT_FOR_DISPLAY,
-} from "./chat-ux-def";
-
+import BotUI from '@ayan4m1/botui';
+import sanitize from './sanitizer';
+import { SANITIZE_USER_INPUT_FOR_DISPLAY } from './chat-ux-def';
 
 /**
  * Chat user interface powered by BotUI (forked ver. on https://github.com/riversun/botui)
@@ -14,9 +11,7 @@ import {
  * @author Tom Misawa (riversun.org@gmail.com,https://github.com/riversun)
  */
 export default class ChatUI {
-
   constructor(opts) {
-
     this.opts = opts;
     this.isStarted = false;
     this.botui = null;
@@ -32,15 +27,10 @@ export default class ChatUI {
   }
 
   initialize() {
-
     if (!this.botui) {
-
-      this.botui = new BotUI(this.opts.holderId,
-        {vue: this.opts.vue}
-      );
+      this.botui = new BotUI(this.opts.holderId);
 
       if (this.opts) {
-
         if (this.opts.api) {
           this.chatClient = new ChatClient(this.opts.api);
         } else {
@@ -51,18 +41,14 @@ export default class ChatUI {
           this.botui.opt.setBotPhoto(this.botInfo.botPhoto);
         }
 
-
         if (this.botInfo.humanPhoto) {
           this.botui.opt.setHumanPhoto(this.botInfo.humanPhoto);
         }
-
       }
     }
   }
 
-
   startChatbot(wakeupInput) {
-
     if (this.isStarted) {
       //pass if started
       return;
@@ -70,45 +56,46 @@ export default class ChatUI {
 
     this.isStarted = true;
     if (wakeupInput) {
-      this.handleUserInput({value: wakeupInput});
+      this.handleUserInput({ value: wakeupInput });
     } else {
       this.showInputPrompt();
     }
-
   }
 
   showInputPrompt() {
     const self = this;
-    self.botui.action.text({
-      addMessage: !SANITIZE_USER_INPUT_FOR_DISPLAY,
-      action: {
-        button: {
-          //icon:'paper-plane',
-          label: this.botInfo.widget.sendLabel
-        },
-        placeholder: this.botInfo.widget.placeHolder
-      }
-    }).then(res => {
-      const text = SANITIZE_USER_INPUT_FOR_DISPLAY ? sanitize(res.value) : res.value;
-      self.botui.message.add({
-        delay: 1,
-        photo: true,
-        human: true, // show it as right aligned to UI
-        content: text,
+    self.botui.action
+      .text({
+        addMessage: !SANITIZE_USER_INPUT_FOR_DISPLAY,
+        action: {
+          button: {
+            //icon:'paper-plane',
+            label: this.botInfo.widget.sendLabel
+          },
+          placeholder: this.botInfo.widget.placeHolder
+        }
+      })
+      .then((res) => {
+        const text = SANITIZE_USER_INPUT_FOR_DISPLAY
+          ? sanitize(res.value)
+          : res.value;
+        self.botui.message.add({
+          delay: 1,
+          photo: true,
+          human: true, // show it as right aligned to UI
+          content: text
+        });
+
+        const _handleUserInput = self.handleUserInput.bind(self);
+        _handleUserInput(res);
       });
-
-      const _handleUserInput = self.handleUserInput.bind(self);
-      _handleUserInput(res);
-    });
   }
-
 
   /**
    * To handle user input text
    * @param userInput
    */
   handleUserInput(userInput) {
-
     if (!this.botui) {
       return;
     }
@@ -126,46 +113,43 @@ export default class ChatUI {
       }
     }
 
-
     setTimeout(() => {
       //Show loading icon
-      this.botui.message.add(
-        {photo: true, loading: true}
-      ).then(loadingIconMsgIdx => {
-
-
-        if (this.opts.methods && this.opts.methods.onServerProcess) {
-          const serverResponse = this.opts.methods.onServerProcess(userInput.value);
-          this.handleChatServerResponse(serverResponse, loadingIconMsgIdx);
-        } else {
-
-          if (!this.chatClient.params) {
-            this.chatClient.params = {};
-          }
-
-          this.chatClient.params.text = this.opts.api.escapeUserInput ? sanitize(userInput.value) : userInput.value;
-
-          //You can intercept request headers/params before sending a request to server
-          if (this.opts.methods && this.opts.methods.onPrepareRequest) {
-            this.opts.methods.onPrepareRequest(this.chatClient);
-          }
-
-          //Finish showing loading icon
-          this.chatClient.sendMsgToChatServer((serverResponse) => {
-
-            //Handling response from ChatServer
+      this.botui.message
+        .add({ photo: true, loading: true })
+        .then((loadingIconMsgIdx) => {
+          if (this.opts.methods && this.opts.methods.onServerProcess) {
+            const serverResponse = this.opts.methods.onServerProcess(
+              userInput.value
+            );
             this.handleChatServerResponse(serverResponse, loadingIconMsgIdx);
-
-            //You can intercept request headers/params after sending a request to server
-            if (this.opts.methods && this.opts.methods.onFinishRequest) {
-              this.opts.methods.onFinishRequest(this.chatClient);
+          } else {
+            if (!this.chatClient.params) {
+              this.chatClient.params = {};
             }
 
-          });
-        }
-      });
-    }, delayMs4LoadingIcon);
+            this.chatClient.params.text = this.opts.api.escapeUserInput
+              ? sanitize(userInput.value)
+              : userInput.value;
 
+            //You can intercept request headers/params before sending a request to server
+            if (this.opts.methods && this.opts.methods.onPrepareRequest) {
+              this.opts.methods.onPrepareRequest(this.chatClient);
+            }
+
+            //Finish showing loading icon
+            this.chatClient.sendMsgToChatServer((serverResponse) => {
+              //Handling response from ChatServer
+              this.handleChatServerResponse(serverResponse, loadingIconMsgIdx);
+
+              //You can intercept request headers/params after sending a request to server
+              if (this.opts.methods && this.opts.methods.onFinishRequest) {
+                this.opts.methods.onFinishRequest(this.chatClient);
+              }
+            });
+          }
+        });
+    }, delayMs4LoadingIcon);
   }
 
   /**
@@ -174,7 +158,6 @@ export default class ChatUI {
    * @param loadingIconMsgIdx
    */
   handleChatServerResponse(serverResponse, loadingIconMsgIdx) {
-
     const self = this;
 
     if (!this.botui) {
@@ -194,7 +177,6 @@ export default class ChatUI {
     let delayMs = 0;
 
     for (let outIdx in out) {
-
       const message = out[outIdx];
 
       const resType = message.type;
@@ -206,7 +188,6 @@ export default class ChatUI {
       }
 
       if (resType == 'text') {
-
         if (outIdx == 0) {
           //In the case of the first message,
           // remove the loading icon and show message
@@ -215,43 +196,59 @@ export default class ChatUI {
             photo: true,
             content: message.value
           });
-
         } else {
-
           this.botui.message.add({
             delay: delayMs,
             photo: true,
             content: message.value
           });
         }
-
       } else if (resType == 'image') {
-
         const type = null;
         const contentValue = '![image](' + message.value + ')';
-        this.handleContent(outIdx, loadingIconMsgIdx, type, contentValue, delayMs);
-
+        this.handleContent(
+          outIdx,
+          loadingIconMsgIdx,
+          type,
+          contentValue,
+          delayMs
+        );
       } else if (resType == 'youtube') {
-
         const type = 'embed';
         const youtubeId = message.value;
         const contentValue = `<iframe src="https://www.youtube.com/embed/${youtubeId}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-        this.handleContent(outIdx, loadingIconMsgIdx, type, contentValue, delayMs);
-
+        this.handleContent(
+          outIdx,
+          loadingIconMsgIdx,
+          type,
+          contentValue,
+          delayMs
+        );
       } else if (resType == 'embed') {
-
         const type = 'embed';
         const contentValue = message.value;
-        this.handleContent(outIdx, loadingIconMsgIdx, type, contentValue, delayMs);
-
+        this.handleContent(
+          outIdx,
+          loadingIconMsgIdx,
+          type,
+          contentValue,
+          delayMs
+        );
       } else if (resType == 'html') {
-
         const type = 'html';
         const contentValue = message.value;
-        this.handleContent(outIdx, loadingIconMsgIdx, type, contentValue, delayMs);
-
-      } else if (resType == 'window' && (this.opts.parent && this.opts.parent.getRenderMode() === 'pc')) {
-
+        this.handleContent(
+          outIdx,
+          loadingIconMsgIdx,
+          type,
+          contentValue,
+          delayMs
+        );
+      } else if (
+        resType == 'window' &&
+        this.opts.parent &&
+        this.opts.parent.getRenderMode() === 'pc'
+      ) {
         let _delayMs = delayMs;
 
         if (!_delayMs) {
@@ -259,16 +256,13 @@ export default class ChatUI {
         }
 
         if (this.opts.parent) {
-
           const func = (callback) => {
-            setTimeout(
-              () => {
-                this.opts.parent.createWindowFromServerMessage(message);
-                if (callback) {
-                  callback();
-                }
-              },
-              _delayMs);
+            setTimeout(() => {
+              this.opts.parent.createWindowFromServerMessage(message);
+              if (callback) {
+                callback();
+              }
+            }, _delayMs);
           };
 
           if (outIdx == 0) {
@@ -280,16 +274,17 @@ export default class ChatUI {
           } else {
             func();
           }
-
         }
-      } else if (resType == 'window' && (this.opts.parent && this.opts.parent.getRenderMode() === 'mobile')) {
-
+      } else if (
+        resType == 'window' &&
+        this.opts.parent &&
+        this.opts.parent.getRenderMode() === 'mobile'
+      ) {
         const type = 'html';
         let contentValue = null;
         let title = null;
 
         if (message.url || message.mobileUrl) {
-
           if (message.url) {
             //url
             title = `${message.url}`;
@@ -306,18 +301,26 @@ export default class ChatUI {
             title = message.title;
           }
 
-          this.handleContent(outIdx, loadingIconMsgIdx, type, contentValue, delayMs);
-
+          this.handleContent(
+            outIdx,
+            loadingIconMsgIdx,
+            type,
+            contentValue,
+            delayMs
+          );
         } else {
           //html
           contentValue = message.html ? message.html : 'No data';
 
-          this.handleContent(outIdx, loadingIconMsgIdx, type, contentValue, delayMs);
+          this.handleContent(
+            outIdx,
+            loadingIconMsgIdx,
+            type,
+            contentValue,
+            delayMs
+          );
         }
-
-
       } else if (resType == 'option') {
-
         const opts = message.options;
 
         let aboutOption = '';
@@ -342,12 +345,11 @@ export default class ChatUI {
         const optActions = new Array();
 
         for (let optIdx in opts) {
-
           const opt = opts[optIdx];
           const label = opt.label;
           const text = opt.value;
 
-          optActions.push({text: label, value: text});
+          optActions.push({ text: label, value: text });
         }
 
         isUserInputConsumed = true;
@@ -355,28 +357,31 @@ export default class ChatUI {
         if (outIdx == 0) {
           //In the case of the first message,
           // remove the loading icon and show message
-          this.botui.message.remove(loadingIconMsgIdx).then(() => {
+          this.botui.message
+            .remove(loadingIconMsgIdx)
+            .then(() => {
               return this.botui.action.button({
-                autoHide: true,//true:Automatically hide when pushing the button
+                autoHide: true, //true:Automatically hide when pushing the button
                 delay: delayMs,
                 action: optActions
               });
-            }
-          ).then(
-            //Handling of pushing of action button
-            this.handleUserInput.bind(this)
-          );
-
+            })
+            .then(
+              //Handling of pushing of action button
+              this.handleUserInput.bind(this)
+            );
         } else {
           //Show action buttons
-          this.botui.action.button({
-            autoHide: true,//true:Automatically hide when pushing the button
-            delay: delayMs,
-            action: optActions
-          }).then(
-            //Handling of pushing of action button
-            this.handleUserInput.bind(this)
-          );
+          this.botui.action
+            .button({
+              autoHide: true, //true:Automatically hide when pushing the button
+              delay: delayMs,
+              action: optActions
+            })
+            .then(
+              //Handling of pushing of action button
+              this.handleUserInput.bind(this)
+            );
         }
       }
     }
@@ -386,12 +391,11 @@ export default class ChatUI {
     if (!isUserInputConsumed) {
       setTimeout(() => {
         self.showInputPrompt();
-      }, (delayMs + msgInterval));
+      }, delayMs + msgInterval);
     }
   }
 
   handleContent(outIdx, loadingIconMsgIdx, type, contentValue, delayMs) {
-
     if (outIdx == 0) {
       //In the case of the first message,
       // remove the loading icon and show message
@@ -401,7 +405,6 @@ export default class ChatUI {
         photo: true,
         content: contentValue
       });
-
     } else {
       this.botui.message.add({
         type: type,

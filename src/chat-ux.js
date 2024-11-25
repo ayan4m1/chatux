@@ -6,17 +6,14 @@ import { JSFrame } from 'jsframe.js';
 library.add(faTimes, faCommentAlt);
 dom.watch();
 
-
-import Vue from 'vue';
 import ChatUI from './chat-ui.js';
 import ChatFrame from './chat-frame.js';
 import { isMobileDevice } from './chat-ux-util.js';
 
-import '../node_modules/botui/build/botui.min.css';
-import '../node_modules/botui/build/botui-theme-default.css';
+import '@ayan4m1/botui/build/botui.min.css';
+import '@ayan4m1/botui/build/botui-theme-default.css';
 import './botui-theme-riversun.css';
 import './app.css';
-
 
 /**
  * Easy to create Chat UI
@@ -26,7 +23,6 @@ import './app.css';
  * @author Tom Misawa (riversun.org@gmail.com,https://github.com/riversun)
  */
 export default class ChatUx {
-
   constructor(opts) {
     if (opts) {
       this.init(opts);
@@ -36,9 +32,7 @@ export default class ChatUx {
     this.autoOpen = false;
   }
 
-
   init(opts) {
-
     this.holderEleId = 'my-chat-bot';
     this.ui = null;
     this.chatFrame = null;
@@ -67,7 +61,6 @@ export default class ChatUx {
     this.ui = new ChatUI({
       holderId: this.holderEleId,
       botInfo: botInfo,
-      vue: Vue,
       api: opts.api,
       methods: methods,
       parent: this
@@ -82,7 +75,6 @@ export default class ChatUx {
     this.chatFrame.buttonOffWhenOpenFrame = opts.buttonOffWhenOpenFrame;
 
     this.chatFrame.onChatFrameCreate = (frame) => {
-
       this.ui.initialize();
 
       if (opts.open || this.autoOpen) {
@@ -95,7 +87,6 @@ export default class ChatUx {
     };
 
     this.chatFrame.onChatFrameResume = (frame) => {
-
       if (botInfo.wakeupText) {
         this.ui.startChatbot(botInfo.wakeupText);
       } else {
@@ -119,7 +110,6 @@ export default class ChatUx {
   }
 
   createWindowFromServerMessage(message) {
-
     //get jsFrame instance
     const jsFrameForChatWindow = this.chatFrame.jsFrame;
 
@@ -155,8 +145,12 @@ export default class ChatUx {
     const dtWinHeight = message.height ? message.height : 400;
     const dtWinLeft = message.left ? message.left : 32;
     const dtWinYOffset = message.addYOffset;
-    const dtWinTop = message.top ? message.top + (dtWinYOffset ? parseInt(window.pageYOffset) : 0) : 32 + (dtWinYOffset ? parseInt(window.pageYOffset) : 0);
-    const dtWinBackgroundColor = message.backgroundColor ? message.backgroundColor : 'rgba(255,255,255,1.0)';
+    const dtWinTop = message.top
+      ? message.top + (dtWinYOffset ? parseInt(window.pageYOffset) : 0)
+      : 32 + (dtWinYOffset ? parseInt(window.pageYOffset) : 0);
+    const dtWinBackgroundColor = message.backgroundColor
+      ? message.backgroundColor
+      : 'rgba(255,255,255,1.0)';
     const dtWinOverflow = message.overflow ? message.overflow : 'auto';
 
     const detailWin = this.jsFrame.create({
@@ -184,17 +178,14 @@ export default class ChatUx {
     });
 
     detailWin.show();
-
   }
 
   start(openFlag) {
-
     if (openFlag) {
       this.autoOpen = openFlag;
     }
 
     this.chatFrame.build(this.holderEleId);
-
   }
 
   dispose() {
@@ -204,9 +195,4 @@ export default class ChatUx {
   isMobileDevice() {
     return isMobileDevice();
   }
-
 }
-
-
-
-

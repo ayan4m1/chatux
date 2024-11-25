@@ -9,12 +9,9 @@ import { isMobileDevice } from './chat-ux-util.js';
  * @author Tom Misawa (riversun.org@gmail.com,https://github.com/riversun)
  */
 export default class ChatFrame {
-
   constructor(opts) {
-
     this.ICON_CROSSMARK = '<i class="fas fa-times"></i>';
     this.ICON_COMMENT = '<i class="fas fa-comment-alt"></i>';
-
 
     //Setup initial parameters[begin]
     if (!opts) {
@@ -38,33 +35,29 @@ export default class ChatFrame {
       this.windowParam = opts.window;
     }
 
-
     //Setup initial parameters[end]
     this.jsFrame = new JSFrame({
       horizontalAlign: 'right',
-      verticalAlign: 'bottom',
+      verticalAlign: 'bottom'
     });
-
 
     this.frameParam = {
       right: 20,
       bottom: 20,
       size: 60,
-      fontSize: 25,
+      fontSize: 25
     };
-
 
     if (opts.wakeupButton) {
       this.frameParam = opts.wakeupButton;
     }
-
 
     this.windowSizeParam = {
       width: 360,
       height: 600,
       minHeight: 300,
       minWidth: 200,
-      titleHeight: 40,
+      titleHeight: 40
     };
 
     if (this.windowParam.size) {
@@ -75,12 +68,12 @@ export default class ChatFrame {
       border: {
         shadow: '2px 2px 10px  rgba(0, 0, 0, 0.5)',
         width: 0,
-        radius: 6,
+        radius: 6
       },
       titleBar: {
         color: 'white',
         background: '#4784d4',
-        leftMargin: (this.windowParam.infoUrl) ? 40 : 10,
+        leftMargin: this.windowParam.infoUrl ? 40 : 10,
         height: this.windowSizeParam.titleHeight,
         fontSize: 14,
         buttonWidth: 36,
@@ -91,22 +84,21 @@ export default class ChatFrame {
             fa: 'fas fa-times',
             name: 'hideButton',
             visible: true
-          },
+          }
         ],
         buttonsOnLeft: [
           {
             fa: 'fas fa-comment-alt',
             name: 'info',
-            visible: (this.windowParam.infoUrl) ? true : false
-          },
-        ],
-      },
+            visible: this.windowParam.infoUrl ? true : false
+          }
+        ]
+      }
     };
 
     if (this.windowParam.appearance) {
       this.appearanceParam = this.windowParam.appearance;
     }
-
 
     this.FRAME_NAME = 'chat_window';
     this.BUTTON_STATE_OPEN = 'open_chat_window';
@@ -125,26 +117,20 @@ export default class ChatFrame {
     this.showChatBtn = null;
     this.chatAreaEle = null;
 
-
     //Empty implementation for default
-    this.onChatFrameCreate = () => {
-    };
+    this.onChatFrameCreate = () => {};
 
-    this.onChatFramePause = () => {
-    };
+    this.onChatFramePause = () => {};
 
-    this.onChatFrameResume = () => {
-    };
+    this.onChatFrameResume = () => {};
 
     this.holderId = '';
-
   }
 
   /**
    * Build chat start button
    */
   buildChatButton() {
-
     const p = this.frameParam;
     const btnRight = p.right;
     const btnBottom = p.bottom;
@@ -163,7 +149,6 @@ export default class ChatFrame {
 
     showChatBtn.onclick = this.toggleChatButtonState.bind(this);
 
-
     const style = showChatBtn.style;
     style.right = btnRight + 'px';
     style.bottom = btnBottom + 'px';
@@ -178,20 +163,16 @@ export default class ChatFrame {
     this.toggleChatButtonState();
   }
 
-
   /**
    * Toggle chat button state
    */
   toggleChatButtonState() {
-
     const showChatBtn = document.querySelector(`#${this.BUTTON_ID}`);
 
     if (!this.buttonState) {
-
       //- buttonState not already set
       showChatBtn.innerHTML = this.ICON_COMMENT;
       this.buttonState = this.BUTTON_STATE_OPEN;
-
     } else if (this.buttonState === this.BUTTON_STATE_OPEN) {
       // - current buttonState is OPEN
 
@@ -199,7 +180,6 @@ export default class ChatFrame {
       this.buttonState = this.BUTTON_STATE_TRANSITION;
 
       this.show(() => {
-
         if (this.buttonOffWhenOpenFrame && this.renderMode === 'pc') {
           this.setChatButtonVisible(false);
         } else {
@@ -208,17 +188,13 @@ export default class ChatFrame {
 
         this.buttonState = this.BUTTON_STATE_CLOSE;
       });
-
     } else if (this.buttonState === this.BUTTON_STATE_TRANSITION) {
       //- Maybe chat button is pressed during the transition
       //Do nothing
-
     } else {
-
       this.buttonState = this.BUTTON_STATE_TRANSITION;
 
       this.hide(() => {
-
         if (this.buttonOffWhenOpenFrame && this.renderMode === 'pc') {
           this.setChatButtonVisible(true);
         } else {
@@ -226,8 +202,6 @@ export default class ChatFrame {
         }
         this.buttonState = this.BUTTON_STATE_OPEN;
       });
-
-
     }
   }
 
@@ -236,9 +210,7 @@ export default class ChatFrame {
    * @param callback
    */
   show(callback) {
-
     if (this.renderMode === 'mobile') {
-
       // on mobile device
       if (this.chatAreaEle) {
         this.chatAreaEle.classList.replace('chatux-scrn-off', 'chatux-scrn-on');
@@ -249,16 +221,13 @@ export default class ChatFrame {
       }
 
       this.onChatFrameResume();
-
     } else {
       //on PC
       const frame = this.jsFrame.getWindowByName(this.FRAME_NAME);
 
       //Open minimized window
       frame.control.doDehide({
-
         callback: (_frame, info) => {
-
           if (callback) {
             callback();
           }
@@ -274,9 +243,7 @@ export default class ChatFrame {
    * @param callback
    */
   hide(callback) {
-
     if (this.renderMode === 'mobile') {
-
       // on mobile device
       if (this.chatAreaEle) {
         this.chatAreaEle.classList.replace('chatux-scrn-on', 'chatux-scrn-off');
@@ -287,9 +254,7 @@ export default class ChatFrame {
       }
 
       this.onChatFramePause();
-
     } else {
-
       //on PC
       const frame = this.jsFrame.getWindowByName(this.FRAME_NAME);
 
@@ -307,7 +272,6 @@ export default class ChatFrame {
         }
       });
     }
-
   }
 
   /**
@@ -320,7 +284,6 @@ export default class ChatFrame {
       chatButton.classList.add('chatux-btn-on');
     } else {
       chatButton.classList.remove('chatux-btn-on');
-
     }
   }
 
@@ -328,7 +291,6 @@ export default class ChatFrame {
    * Build chat area for mobile devices
    */
   buildChatArea() {
-
     this.chatAreaEle = document.createElement('div');
     document.body.appendChild(this.chatAreaEle);
     this.initializeChatArea();
@@ -358,7 +320,6 @@ export default class ChatFrame {
    *  Build chat window for PC
    */
   buildChatWindow() {
-
     const param = this.frameParam;
     const size = this.windowSizeParam;
     const frmWidth = size.width;
@@ -394,14 +355,14 @@ export default class ChatFrame {
         backgroundColor: 'rgba(255,255,255,1.0)',
         overflow: 'auto'
       },
-      html: '',// 'Chat UI Here'
+      html: '' // 'Chat UI Here'
       //url: // Chat URL here
     });
 
     //Enable helper to act on window's common operations(maximization/minimization and something)
     this.frame.setControl({
       animation: true,
-      animationDuration: 200,
+      animationDuration: 200
     });
 
     //Set click event when the close button is clicked
@@ -410,18 +371,16 @@ export default class ChatFrame {
     });
 
     this.frame.on('info', 'click', (_frame, evt) => {
-
       if (this.windowParam.infoUrl) {
         window.open(this.windowParam.infoUrl, '_blank');
       }
-
     });
 
     //Minimize the window first to memory the  initial window position and size.
     this.frame.control.doHide({
-      silent: true,//means invisible action
+      silent: true, //means invisible action
       duration: 0,
-      align: 'ABSOLUTE',//need to set the offset point where window is minimized
+      align: 'ABSOLUTE', //need to set the offset point where window is minimized
       offset: this.buttonVanishPoint,
       callback: (_frame, info) => {
         this.onChatFrameCreate(_frame);
@@ -429,13 +388,11 @@ export default class ChatFrame {
     });
   }
 
-
   /**
    * Build Chat UI and related components like wakeup button
    * @param holderEleId
    */
   build(holderEleId, isAutoOpen) {
-
     this.holderId = holderEleId;
 
     if (this.renderMode === 'mobile') {
@@ -443,19 +400,16 @@ export default class ChatFrame {
       this.buildChatArea();
       this.buildChatButton();
       this.onChatFrameCreate();
-
     } else {
       //on PC
       this.buildChatWindow();
       this.frame.setHTML(this.getBotUiInnterHtml());
       this.buildChatButton();
-
     }
     this.setChatButtonVisible(true);
   }
 
   clear() {
-
     if (document.body.contains(this.chatAreaEle)) {
       document.body.removeChild(this.chatAreaEle);
     }
@@ -470,7 +424,6 @@ export default class ChatFrame {
     }
   }
 
-
   /**
    * Returns true when app is running on mobile devices
    * @returns {boolean}
@@ -478,5 +431,4 @@ export default class ChatFrame {
   isMobileDevice() {
     return isMobileDevice();
   }
-
 }
